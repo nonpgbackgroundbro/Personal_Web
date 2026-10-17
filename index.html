@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Personal portfolio of Kien Tan Quan — frontend developer building fast, accessible, and beautiful web experiences." />
+  <title>Kien Tan Quan | Frontend Developer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="navbar" aria-label="Primary">
+      <a class="navbar__brand" href="#about">
+        <span class="navbar__initials" aria-hidden="true">KQ</span>
+        <span class="navbar__name">Kien Tan Quan</span>
+      </a>
+
+      <button
+        class="navbar__toggle"
+        id="nav-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="nav-menu"
+        aria-label="Open menu"
+      >
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+        <span class="navbar__toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <div class="navbar__menu" id="nav-menu">
+        <ul class="navbar__list">
+          <li><a class="navbar__link" href="#about">About</a></li>
+          <li><a class="navbar__link" href="#skills">Skills</a></li>
+          <li><a class="navbar__link" href="#product">Product</a></li>
+          <li><a class="navbar__link" href="#contact">Contact</a></li>
+        </ul>
+
+        <button
+          class="theme-toggle"
+          id="theme-toggle"
+          type="button"
+          aria-label="Switch to dark mode"
+        >
+          <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+          <span class="theme-toggle__label">Dark</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="site-main">
+
+    <section class="hero section" id="about" aria-labelledby="about-title">
+      <div class="container hero__inner">
+        <p class="hero__eyebrow">Hello, my name is</p>
+        <h1 class="hero__title" id="about-title">Kien Tan Quan.</h1>
+        <p class="hero__subtitle">I build thoughtful interfaces for the web.</p>
+        <p class="hero__bio">
+          I'm a frontend developer with six years of experience turning complex
+          product requirements into clean, accessible, and performant user
+          experiences. I care about the details — typography, motion, load
+          times, and the small moments that make an interface feel effortless.
+          Currently focused on design systems and component architecture with
+          React and TypeScript.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#contact">Get in touch</a>
+          <a class="btn btn--ghost" href="#skills">View my skills</a>
+        </div>
+
+        <dl class="hero__stats">
+          <div class="stat">
+            <dt class="stat__label">Years of experience</dt>
+            <dd class="stat__value">6+</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat__label">Projects shipped</dt>
+            <dd class="stat__value">40+</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat__label">Coffee cups</dt>
+            <dd class="stat__value">2,400+</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section section--muted" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="section__eyebrow">What I work with</p>
+          <h2 class="section__title" id="skills-title">Skills Showcase</h2>
+          <p class="section__lead">
+            A toolbox built over six years of shipping production frontends —
+            from interface polish to the infrastructure behind it.
+          </p>
+        </header>
+
+        <ul class="skills-grid">
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">🧱</span>
+            <h3 class="skill-card__title">HTML &amp; CSS</h3>
+            <p class="skill-card__text">
+              Semantic markup, modern layout with Grid and Flexbox, custom
+              properties, and accessible patterns that hold up under audit.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 95 percent">
+              <span class="skill-card__meter-fill" style="--level: 95%"></span>
+            </div>
+          </li>
+
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">⚙️</span>
+            <h3 class="skill-card__title">JavaScript</h3>
+            <p class="skill-card__text">
+              Modern ES2023, async patterns, DOM architecture, and a healthy
+              respect for keeping bundle sizes small and runtime predictable.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 92 percent">
+              <span class="skill-card__meter-fill" style="--level: 92%"></span>
+            </div>
+          </li>
+
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">⚛️</span>
+            <h3 class="skill-card__title">React &amp; TypeScript</h3>
+            <p class="skill-card__text">
+              Component-driven architecture, hooks, strict typing, and design
+              systems that scale across teams without collapsing under drift.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 90 percent">
+              <span class="skill-card__meter-fill" style="--level: 90%"></span>
+            </div>
+          </li>
+
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">🎨</span>
+            <h3 class="skill-card__title">UI &amp; UX Design</h3>
+            <p class="skill-card__text">
+              Visual hierarchy, spacing systems, and interaction states —
+              comfortable moving between Figma and the codebase fluently.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 84 percent">
+              <span class="skill-card__meter-fill" style="--level: 84%"></span>
+            </div>
+          </li>
+
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">🚀</span>
+            <h3 class="skill-card__title">Performance</h3>
+            <p class="skill-card__text">
+              Core Web Vitals, code splitting, image pipelines, and profiling
+              in DevTools until the numbers actually move.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 87 percent">
+              <span class="skill-card__meter-fill" style="--level: 87%"></span>
+            </div>
+          </li>
+
+          <li class="skill-card">
+            <span class="skill-card__icon" aria-hidden="true">🛠️</span>
+            <h3 class="skill-card__title">Tooling &amp; Workflow</h3>
+            <p class="skill-card__text">
+              Git workflows, Vite, testing with Vitest and Playwright, and CI
+              pipelines that keep main branch boring — as it should be.
+            </p>
+            <div class="skill-card__meter" role="img" aria-label="Proficiency: 88 percent">
+              <span class="skill-card__meter-fill" style="--level: 88%"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section section--muted" id="product" aria-labelledby="product-title">
+      <div class="container">
+        <header class="section__header">
+          <p class="section__eyebrow">Featured build</p>
+          <h2 class="section__title" id="product-title">Product</h2>
+          <p class="section__lead">
+            A 4×4 memory matching game — one of my portfolio builds. Flip two
+            cards to find a pair; clear the board in as few moves as you can.
+            Each card face uses my own gem artwork.
+          </p>
+        </header>
+
+        <div class="game">
+          <div class="game__stats" aria-label="Game statistics">
+            <div class="game__stat">
+              <span class="game__stat-label">Moves</span>
+              <span class="game__stat-value" id="game-moves">0</span>
+            </div>
+            <div class="game__stat">
+              <span class="game__stat-label">Matches</span>
+              <span class="game__stat-value" id="game-matches">0 / 8</span>
+            </div>
+            <div class="game__stat">
+              <span class="game__stat-label">Time</span>
+              <span class="game__stat-value" id="game-time">00:00</span>
+            </div>
+          </div>
+
+          <div class="game__board" id="game-board" role="group" aria-label="Memory game board, 4 by 4 cards"></div>
+
+          <div class="game__controls">
+            <button class="btn btn--primary" id="game-restart" type="button">Restart game</button>
+            <p class="game__status" id="game-status" role="status" aria-live="polite"></p>
+          </div>
+
+          <noscript>
+            <p class="game__status">
+              This game needs JavaScript enabled to run.
+            </p>
+          </noscript>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-labelledby="contact-title">
+      <div class="container contact">
+        <header class="section__header">
+          <p class="section__eyebrow">Let's talk</p>
+          <h2 class="section__title" id="contact-title">Contact Information</h2>
+          <p class="section__lead">
+            Have a project, a role, or just a good idea? My inbox is always
+            open — I usually reply within a day.
+          </p>
+        </header>
+
+        <div class="contact__grid">
+          <ul class="contact__channels">
+            <li class="contact-card">
+              <span class="contact-card__icon" aria-hidden="true">✉️</span>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">Email</h3>
+                <a class="contact-card__value" href="mailto:hello@kientanquan.dev">hello@kientanquan.dev</a>
+              </div>
+            </li>
+            <li class="contact-card">
+              <span class="contact-card__icon" aria-hidden="true">💼</span>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">LinkedIn</h3>
+                <a class="contact-card__value" href="https://www.linkedin.com/in/kientanquan" target="_blank" rel="noopener noreferrer">/in/kientanquan</a>
+              </div>
+            </li>
+            <li class="contact-card">
+              <span class="contact-card__icon" aria-hidden="true">🐙</span>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">GitHub</h3>
+                <a class="contact-card__value" href="https://github.com/kientanquan" target="_blank" rel="noopener noreferrer">@kientanquan</a>
+              </div>
+            </li>
+            <li class="contact-card">
+              <span class="contact-card__icon" aria-hidden="true">📍</span>
+              <div class="contact-card__body">
+                <h3 class="contact-card__label">Location</h3>
+                <p class="contact-card__value contact-card__value--plain">Lisbon, Portugal · Remote friendly</p>
+              </div>
+            </li>
+          </ul>
+
+          <form class="contact-form" id="contact-form" novalidate>
+            <p class="contact-form__notice">
+              <strong>This form is a demo.</strong> This site is plain HTML, CSS
+              and JavaScript with no backend, so messages typed here are not
+              stored or sent anywhere. To actually get in touch, email me
+              directly at
+              <a href="mailto:hello@kientanquan.dev">hello@kientanquan.dev</a>.
+              The fields below only demonstrate client-side validation.
+            </p>
+
+            <div class="form-field">
+              <label class="form-field__label" for="name">Name</label>
+              <input class="form-field__input" type="text" id="name" name="name" placeholder="Jane Doe" required />
+            </div>
+
+            <div class="form-field">
+              <label class="form-field__label" for="email">Email</label>
+              <input class="form-field__input" type="email" id="email" name="email" placeholder="jane@example.com" required />
+            </div>
+
+            <div class="form-field">
+              <label class="form-field__label" for="message">Message</label>
+              <textarea class="form-field__input form-field__input--area" id="message" name="message" rows="5" placeholder="Tell me a little about your project…" required></textarea>
+            </div>
+
+            <button class="btn btn--primary btn--block" type="submit">Check my message</button>
+
+            <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <p class="site-footer__copy">© <span id="year">2026</span> Kien Tan Quan. Built with plain HTML, CSS &amp; JS.</p>
+      <a class="site-footer__top" href="#about">Back to top ↑</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
