@@ -1,2 +1,5 @@
 # macOS
 .DS_Store
+
+# local build artifact
+building-responsive-personal-website.json
