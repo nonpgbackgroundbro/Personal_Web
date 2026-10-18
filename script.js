@@ -4,9 +4,14 @@
    1. Dark / light mode toggle with localStorage persistence
       (falls back to the OS preference on first visit)
    2. Mobile navigation drawer
-   3. Scroll-spy for active nav links
+   3. Scroll-spy for active nav links + a single sliding pill
+      that glides between links (instead of per-link pills)
    4. Contact form — client-side validation demo (no backend; see note)
    5. Dynamic footer year
+   6. Scroll reveal — sections/cards fade & slide in via
+      IntersectionObserver; skill meters animate 0 → --level
+   7. Hero stat count-up (6+ / 40+ / 2,400+) on first view
+   8. Scroll-progress bar under the fixed header
    ========================================================= */
 
 (function () {
@@ -56,11 +61,12 @@
 
     if (!themeToggle) return;
 
-    var icon = themeToggle.querySelector(".theme-toggle__icon");
+    // The sun/moon glyphs are static inline SVGs — the [data-theme]
+    // attribute on <html> drives their cross-fade + rotation in CSS,
+    // so JS only keeps the visible label and aria-label truthful.
     var label = themeToggle.querySelector(".theme-toggle__label");
     var next = theme === "dark" ? "light" : "dark";
 
-    if (icon) icon.textContent = theme === "dark" ? "☀️" : "🌙";
     if (label) label.textContent = theme === "dark" ? "Light" : "Dark";
     themeToggle.setAttribute("aria-label", "Switch to " + next + " mode");
   }
@@ -94,6 +100,11 @@
     navMenu.classList.add("is-open");
     navToggle.setAttribute("aria-expanded", "true");
     navToggle.setAttribute("aria-label", "Close menu");
+    // The drawer just became visible — measure the links now so the
+    // sliding indicator isn't stuck at the size it had while hidden.
+    window.requestAnimationFrame(function () {
+      moveIndicatorTo(document.querySelector(".navbar__link.is-active"));
+    });
   }
 
   if (navToggle && navMenu) {
@@ -138,18 +149,42 @@
      --------------------------------------------------------- */
   var sections = document.querySelectorAll("main section[id]");
   var navLinks = document.querySelectorAll(".navbar__link");
+  var navIndicator = document.querySelector(".navbar__indicator");
+
+  /** Glide the single shared pill to `link` (see .navbar__indicator).
+      Offsets are measured against .navbar__list, which CSS makes
+      position: relative, so the numbers line up at any breakpoint. */
+  function moveIndicatorTo(link) {
+    // offsetWidth is 0 while the mobile drawer is display:none —
+    // skip and re-run when the menu opens (see openMenu below).
+    if (!navIndicator || !link || !link.offsetWidth) return;
+    navIndicator.style.width = link.offsetWidth + "px";
+    navIndicator.style.height = link.offsetHeight + "px";
+    navIndicator.style.transform =
+      "translate(" + link.offsetLeft + "px, " + link.offsetTop + "px)";
+    navIndicator.classList.add("is-on");
+  }
 
   function setActiveLink(id) {
+    var active = null;
     navLinks.forEach(function (link) {
       var isActive = link.getAttribute("href") === "#" + id;
       link.classList.toggle("is-active", isActive);
       if (isActive) {
         link.setAttribute("aria-current", "true");
+        active = link;
       } else {
         link.removeAttribute("aria-current");
       }
     });
+    moveIndicatorTo(active);
   }
+
+  // Keep the pill glued to the active link through resizes
+  // (padding/font changes between the mobile and desktop layouts).
+  window.addEventListener("resize", function () {
+    moveIndicatorTo(document.querySelector(".navbar__link.is-active"));
+  });
 
   if ("IntersectionObserver" in window && sections.length) {
     var observer = new IntersectionObserver(
@@ -482,6 +517,127 @@
     });
 
     resetGame();
+  }
+
+  /* ---------------------------------------------------------
+     Motion — scroll reveal, stat count-up, scroll progress
+     All progressive enhancement: without JS (or under
+     prefers-reduced-motion) the page renders fully visible with
+     the final stat values — script.js only adds the hidden start
+     state, then hands off to IntersectionObserver.
+     --------------------------------------------------------- */
+
+  // --- 6. Scroll reveal -----------------------------------------
+  var revealTargets = Array.prototype.slice.call(
+    document.querySelectorAll(
+      ".hero__eyebrow, .hero__title, .hero__subtitle, .hero__bio, " +
+        ".hero__actions, .hero__stats, .section__header, .skill-card, " +
+        ".game, .contact-card, .contact-form"
+    )
+  );
+
+  var reducedMotion =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (revealTargets.length && "IntersectionObserver" in window && !reducedMotion) {
+    // Stagger siblings that share a parent so grids cascade in
+    // instead of popping as one block (capped at 350ms).
+    var delayCounts = new Map();
+    revealTargets.forEach(function (el) {
+      var index = delayCounts.get(el.parentElement) || 0;
+      delayCounts.set(el.parentElement, index + 1);
+      el.style.setProperty("--reveal-delay", Math.min(index * 70, 350) + "ms");
+      el.classList.add("reveal");
+    });
+
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          // First sight of the hero stats kicks off the count-up.
+          if (entry.target.classList.contains("hero__stats")) {
+            animateStats(); // declared below — function declarations hoist
+          }
+          revealObserver.unobserve(entry.target); // reveal once
+        });
+      },
+      // Trigger just before the element's bottom edge crosses in.
+      { rootMargin: "0px 0px -60px 0px", threshold: 0 }
+    );
+
+    revealTargets.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  }
+
+  // --- 7. Hero stat count-up ------------------------------------
+  var statPlan = Array.prototype.slice
+    .call(document.querySelectorAll(".hero__stats .stat__value"))
+    .map(function (el) {
+      // Parse each label's final number ONCE, before any frames run:
+      // "2,400+" → target 2400, suffix "+".
+      var raw = el.textContent.trim();
+      return {
+        el: el,
+        target: parseInt(raw.replace(/[^0-9]/g, ""), 10) || 0,
+        suffix: raw.replace(/[0-9,]/g, "")
+      };
+    });
+  var statsAnimated = false;
+
+  /** Animate stats 0 → target with ease-out cubic. Runs at most once.
+      When reveal is skipped (reduced motion / no IntersectionObserver)
+      this is never called, so the values in index.html stay final. */
+  function animateStats() {
+    if (statsAnimated || !statPlan.length) return;
+    statsAnimated = true;
+
+    var DURATION = 1200;
+    var startTime = null;
+
+    function tick(now) {
+      if (startTime === null) startTime = now;
+      var progress = Math.min((now - startTime) / DURATION, 1);
+      var eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      statPlan.forEach(function (stat) {
+        var value = Math.round(stat.target * eased);
+        stat.el.textContent = value.toLocaleString("en-US") + stat.suffix;
+      });
+      if (progress < 1) window.requestAnimationFrame(tick);
+    }
+
+    window.requestAnimationFrame(tick);
+  }
+
+  // --- 8. Scroll-progress bar -----------------------------------
+  var progressEl = document.querySelector(".scroll-progress");
+  var progressQueued = false;
+
+  function updateScrollProgress() {
+    progressQueued = false;
+    if (!progressEl) return;
+    var scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    var ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+    // scaleX only — animates on the compositor, never touches layout.
+    progressEl.style.transform =
+      "scaleX(" + Math.min(Math.max(ratio, 0), 1) + ")";
+  }
+
+  if (progressEl) {
+    // rAF-throttled: bursts of scroll events collapse into one repaint.
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (progressQueued) return;
+        progressQueued = true;
+        window.requestAnimationFrame(updateScrollProgress);
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", updateScrollProgress);
+    updateScrollProgress();
   }
 
   /* ---------------------------------------------------------

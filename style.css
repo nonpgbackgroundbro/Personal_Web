@@ -48,6 +48,7 @@
   --color-on-accent: #ffffff;
 
   /* ---- Utility ---- */
+  color-scheme: light; /* native form controls + scrollbars follow the theme */
   --color-focus: #1d4ed8; /* focus ring stays blue: calm + high contrast */
   --color-card-face: #0d0d0d; /* dark backdrop for the gem artwork */
   --color-success: #15803d;
@@ -117,6 +118,7 @@
   --color-on-accent: #1c1104; /* dark text on bright amber = best contrast */
 
   /* ---- Utility ---- */
+  color-scheme: dark;
   --color-focus: #7fa5ff;
   --color-card-face: #0d0d0d;
   --color-success: #4ade80;
@@ -334,12 +336,15 @@ a:hover {
 }
 
 .navbar__list {
+  position: relative; /* anchors the sliding active indicator */
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
 .navbar__link {
+  position: relative; /* text sits above the sliding indicator */
+  z-index: 1;
   display: block;
   padding: 0.5rem 0.85rem;
   border-radius: var(--radius-sm);
@@ -349,10 +354,32 @@ a:hover {
   transition: color var(--transition), background-color var(--transition);
 }
 
-.navbar__link:hover,
-.navbar__link.is-active {
-  color: var(--color-blue); /* nav state uses the cool family, not amber */
+.navbar__link:hover {
+  color: var(--color-blue);
   background-color: var(--color-blue-soft);
+}
+
+.navbar__link.is-active {
+  color: var(--color-blue); /* the sliding pill supplies the background */
+}
+
+/* Sliding active indicator — one element glides between links instead
+   of each link painting its own static pill. Position/size set in JS. */
+.navbar__indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-blue-soft);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    width 280ms cubic-bezier(0.4, 0, 0.2, 1),
+    height 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;
+}
+
+.navbar__indicator.is-on {
+  opacity: 1;
 }
 
 /* Theme toggle */
@@ -376,6 +403,60 @@ a:hover {
 .theme-toggle:hover {
   border-color: var(--color-blue);
   color: var(--color-blue);
+}
+
+/* Sun/moon SVG morph: both glyphs occupy the same grid cell and
+   cross-fade + rotate when the theme flips. */
+.theme-toggle__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.1em;
+  height: 1.1em;
+  line-height: 0;
+}
+
+.theme-toggle__glyph {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
+}
+
+.theme-toggle__glyph--sun {
+  opacity: 0;
+  transform: rotate(-135deg) scale(0.4);
+}
+
+.theme-toggle__glyph--moon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme="dark"] .theme-toggle__glyph--sun {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+[data-theme="dark"] .theme-toggle__glyph--moon {
+  opacity: 0;
+  transform: rotate(135deg) scale(0.4);
+}
+
+/* Scroll-progress bar under the fixed header (width via JS) */
+.scroll-progress {
+  position: absolute;
+  inset: auto 0 -1px 0; /* hug the header's bottom border */
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--color-blue),
+    var(--color-indigo),
+    var(--color-violet)
+  );
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  will-change: transform;
+  pointer-events: none;
 }
 
 /* Hamburger — hidden on desktop */
@@ -473,6 +554,7 @@ a:hover {
   font-size: var(--fs-xl);
   font-weight: 700;
   color: var(--color-violet); /* analogous accent — amber stays for CTAs only */
+  font-variant-numeric: tabular-nums; /* count-up digits don't jitter width */
 }
 
 .stat {
@@ -543,6 +625,20 @@ a:hover {
     var(--color-violet)
   );
   border-radius: inherit;
+}
+
+/* Scroll-reveal extension: once script.js flags the card with .reveal,
+   the meter starts empty and fills to --level when .is-visible lands —
+   so the bars visibly "level up" as they scroll into view. The delay
+   stacks on the card's own --reveal-delay so fills follow their card. */
+.skill-card.reveal .skill-card__meter-fill {
+  width: 0;
+  transition: width 900ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: calc(var(--reveal-delay, 0ms) + 320ms);
+}
+
+.skill-card.reveal.is-visible .skill-card__meter-fill {
+  width: var(--level, 50%);
 }
 
 /* =========================================================
@@ -1014,6 +1110,26 @@ a:hover {
   }
 }
 
+/* ---------- Scroll reveal (progressive enhancement) ----------
+   Content is fully visible WITHOUT JavaScript: script.js adds the
+   .reveal class (hidden start state) and swaps in .is-visible when
+   IntersectionObserver reports the element on screen. It also sets
+   --reveal-delay on siblings so groups stagger instead of popping
+   in as one block. Uses the standalone `translate` property so it
+   never fights the transform-based micro-interactions (hover lifts,
+   card flips). */
+.reveal {
+  opacity: 0;
+  translate: 0 18px;
+  transition: opacity 560ms ease, translate 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
 /* ---------- Motion preferences ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -1026,5 +1142,17 @@ a:hover {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    animation-delay: 0ms !important;
+  }
+
+  /* Never leave content hidden waiting on a transition. */
+  .reveal {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+
+  .skill-card.reveal .skill-card__meter-fill {
+    width: var(--level, 50%);
   }
 }
