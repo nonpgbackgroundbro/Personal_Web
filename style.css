@@ -490,6 +490,22 @@ a:hover {
   padding-top: var(--navbar-height);
 }
 
+/* Hero avatar — inline SVG portrait (no extra network request);
+   colors come from tokens so it re-tints with the theme. */
+.hero__avatar {
+  width: 7rem;
+  height: 7rem;
+  margin-bottom: var(--space-5);
+}
+
+.hero__avatar svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+}
+
 .hero__inner {
   max-width: 46rem;
 }
@@ -591,8 +607,14 @@ a:hover {
 }
 
 .skill-card__icon {
-  font-size: 1.75rem;
-  line-height: 1;
+  display: inline-flex;
+  color: var(--color-blue); /* stroke icons pick up the analogous family */
+}
+
+.skill-card__icon .icon {
+  display: block;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .skill-card__title {
@@ -644,11 +666,18 @@ a:hover {
 /* =========================================================
    Product — memory game
    ========================================================= */
+/* Framed panel: a surface card on the muted band so the game reads
+   as a distinct object instead of blending into the section. */
 .game {
   display: grid;
   gap: var(--space-5);
   max-width: 34rem;
   margin-inline: auto;
+  padding: var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .game__stats {
@@ -663,7 +692,7 @@ a:hover {
   align-items: center;
   gap: var(--space-1);
   padding: var(--space-3);
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-alt); /* chips read against the frame */
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -684,11 +713,14 @@ a:hover {
   color: var(--color-violet);
 }
 
-/* --- Board --- */
+/* --- Board: inset tray so the white card backs stand out --- */
 .game__board {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-3);
+  padding: var(--space-3);
+  background-color: var(--color-surface-alt);
+  border-radius: var(--radius-md);
 }
 
 /* --- Card --- */
@@ -840,8 +872,20 @@ a:hover {
 }
 
 .contact-card__icon {
-  font-size: 1.5rem;
-  line-height: 1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--color-blue-soft);
+  color: var(--color-blue);
+}
+
+.contact-card__icon .icon {
+  display: block;
+  width: 1.35rem;
+  height: 1.35rem;
 }
 
 .contact-card__label {
@@ -1072,6 +1116,7 @@ a:hover {
   /* --- Game adapts to small screens --- */
   .game {
     gap: var(--space-4);
+    padding: var(--space-4);
   }
 
   .game__stat {
@@ -1084,6 +1129,7 @@ a:hover {
 
   .game__board {
     gap: var(--space-2);
+    padding: var(--space-2);
   }
 
   .card__face--back {

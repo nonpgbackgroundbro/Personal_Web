@@ -530,9 +530,9 @@
   // --- 6. Scroll reveal -----------------------------------------
   var revealTargets = Array.prototype.slice.call(
     document.querySelectorAll(
-      ".hero__eyebrow, .hero__title, .hero__subtitle, .hero__bio, " +
-        ".hero__actions, .hero__stats, .section__header, .skill-card, " +
-        ".game, .contact-card, .contact-form"
+      ".hero__avatar, .hero__eyebrow, .hero__title, .hero__subtitle, " +
+        ".hero__bio, .hero__actions, .hero__stats, .section__header, " +
+        ".skill-card, .game, .contact-card, .contact-form"
     )
   );
 

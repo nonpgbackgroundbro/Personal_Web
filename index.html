@@ -62,6 +62,38 @@
 
     <section class="hero section" id="about" aria-labelledby="about-title">
       <div class="container hero__inner">
+        <div class="hero__avatar" role="img" aria-label="Illustrated avatar of Kien Tan Quan">
+          <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="avatar-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" style="stop-color: var(--color-blue)" />
+                <stop offset="0.55" style="stop-color: var(--color-indigo)" />
+                <stop offset="1" style="stop-color: var(--color-violet)" />
+              </linearGradient>
+              <clipPath id="avatar-clip">
+                <circle cx="60" cy="60" r="60" />
+              </clipPath>
+            </defs>
+            <g clip-path="url(#avatar-clip)">
+              <rect width="120" height="120" style="fill: var(--color-blue-soft)" />
+              <!-- accent dots: amber + analogous blue/violet -->
+              <circle cx="95" cy="27" r="13" style="fill: var(--color-accent)" />
+              <circle cx="27" cy="88" r="5" style="fill: var(--color-indigo); opacity: 0.5" />
+              <circle cx="31" cy="33" r="3.5" style="fill: var(--color-violet); opacity: 0.7" />
+              <!-- head + shoulders, same blue -> violet ramp -->
+              <circle cx="60" cy="49" r="20.5" fill="url(#avatar-grad)" />
+              <path d="M6 122 C10 97 31 80 60 80 C89 80 110 97 114 122 Z" fill="url(#avatar-grad)" />
+              <!-- glasses: --color-bg inverts with the theme, so the
+                   strokes contrast against the blue->violet head both ways -->
+              <g style="fill: none; stroke: var(--color-bg)" stroke-width="2" stroke-linecap="round">
+                <circle cx="53.5" cy="48.5" r="4.8" />
+                <circle cx="66.5" cy="48.5" r="4.8" />
+                <path d="M58.7 48.5h2.6" />
+              </g>
+            </g>
+            <circle cx="60" cy="60" r="58" fill="none" stroke="url(#avatar-grad)" stroke-width="4" />
+          </svg>
+        </div>
         <p class="hero__eyebrow">Hello, my name is</p>
         <h1 class="hero__title" id="about-title">Kien Tan Quan.</h1>
         <p class="hero__subtitle">I build thoughtful interfaces for the web.</p>
@@ -109,7 +141,7 @@
 
         <ul class="skills-grid">
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">🧱</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></span>
             <h3 class="skill-card__title">HTML &amp; CSS</h3>
             <p class="skill-card__text">
               Semantic markup, modern layout with Grid and Flexbox, custom
@@ -121,7 +153,7 @@
           </li>
 
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">⚙️</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg></span>
             <h3 class="skill-card__title">JavaScript</h3>
             <p class="skill-card__text">
               Modern ES2023, async patterns, DOM architecture, and a healthy
@@ -133,7 +165,7 @@
           </li>
 
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">⚛️</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="2"/><path d="M4.93 19.07a10 10 0 0 1 0-14.14"/><path d="M7.76 16.24a6 6 0 0 1 0-8.49"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></span>
             <h3 class="skill-card__title">React &amp; TypeScript</h3>
             <p class="skill-card__text">
               Component-driven architecture, hooks, strict typing, and design
@@ -145,7 +177,7 @@
           </li>
 
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">🎨</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="m2 2 7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></span>
             <h3 class="skill-card__title">UI &amp; UX Design</h3>
             <p class="skill-card__text">
               Visual hierarchy, spacing systems, and interaction states —
@@ -157,7 +189,7 @@
           </li>
 
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">🚀</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
             <h3 class="skill-card__title">Performance</h3>
             <p class="skill-card__text">
               Core Web Vitals, code splitting, image pipelines, and profiling
@@ -169,7 +201,7 @@
           </li>
 
           <li class="skill-card">
-            <span class="skill-card__icon" aria-hidden="true">🛠️</span>
+            <span class="skill-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></span>
             <h3 class="skill-card__title">Tooling &amp; Workflow</h3>
             <p class="skill-card__text">
               Git workflows, Vite, testing with Vitest and Playwright, and CI
@@ -241,28 +273,28 @@
         <div class="contact__grid">
           <ul class="contact__channels">
             <li class="contact-card">
-              <span class="contact-card__icon" aria-hidden="true">✉️</span>
+              <span class="contact-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="m22 6-10 7L2 6"/></svg></span>
               <div class="contact-card__body">
                 <h3 class="contact-card__label">Email</h3>
                 <a class="contact-card__value" href="mailto:hello@kientanquan.dev">hello@kientanquan.dev</a>
               </div>
             </li>
             <li class="contact-card">
-              <span class="contact-card__icon" aria-hidden="true">💼</span>
+              <span class="contact-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></span>
               <div class="contact-card__body">
                 <h3 class="contact-card__label">LinkedIn</h3>
                 <a class="contact-card__value" href="https://www.linkedin.com/in/kientanquan" target="_blank" rel="noopener noreferrer">/in/kientanquan</a>
               </div>
             </li>
             <li class="contact-card">
-              <span class="contact-card__icon" aria-hidden="true">🐙</span>
+              <span class="contact-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></span>
               <div class="contact-card__body">
                 <h3 class="contact-card__label">GitHub</h3>
                 <a class="contact-card__value" href="https://github.com/kientanquan" target="_blank" rel="noopener noreferrer">@kientanquan</a>
               </div>
             </li>
             <li class="contact-card">
-              <span class="contact-card__icon" aria-hidden="true">📍</span>
+              <span class="contact-card__icon" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
               <div class="contact-card__body">
                 <h3 class="contact-card__label">Location</h3>
                 <p class="contact-card__value contact-card__value--plain">Lisbon, Portugal · Remote friendly</p>
