@@ -2,25 +2,56 @@
    Personal Website — style.css
    ========================================================= */
 
-/* ---------- Design tokens ---------- */
+/* =========================================================
+   Design tokens — colour system built on 60 / 30 / 10
+   ---------------------------------------------------------
+   60%  TINTED NEUTRALS — every grey is pushed toward blue so
+        the page reads cool overall: --color-bg, --color-surface,
+        --color-surface-alt, --color-border, --color-text.
+   30%  ANALOGOUS COLOURS — blue → indigo → violet are adjacent
+        on the colour wheel, so they harmonise naturally. Used
+        for: links + link hover (blue → indigo), focus rings and
+        input focus (blue), skill meter fill (full blue → indigo
+        → violet gradient), card backs (indigo), footer link
+        (violet).
+   10%  COMPLEMENTARY ACCENT — amber/orange sits opposite blue on
+        the colour wheel, so a small amount creates deliberate
+        warm-vs-cool contrast. Reserved for primary CTAs, section
+        eyebrows, the brand badge and the demo-form notice only.
+        (Amber steps are Tailwind amber-800 / amber-400: the
+        darker light-mode step keeps >= 4.5:1 contrast even on
+        the tinted --color-surface-alt band, per WCAG AA.)
+   ========================================================= */
 :root {
-  /* Palette — light */
-  --color-bg: #f7f8fa;
+  /* ---- 60% — tinted neutrals (greys with a blue cast) ---- */
+  --color-bg: #f4f6fb;
   --color-surface: #ffffff;
-  --color-surface-alt: #eef1f6;
-  --color-border: #dfe3ea;
-  --color-text: #1e2430;
-  --color-text-muted: #5b6472;
-  --color-primary: #1f2a3d;
-  --color-primary-contrast: #ffffff;
-  --color-accent: #1d4ed8;
-  --color-accent-strong: #1746b8;
-  --color-accent-soft: rgba(29, 78, 216, 0.1);
+  --color-surface-alt: #e9edf7;
+  --color-border: #d6ddf0;
+  --color-text: #1c2333;
+  --color-text-muted: #566079;
+
+  /* ---- 30% — analogous family: blue → indigo → violet ---- */
+  --color-blue: #1d4ed8;
+  --color-indigo: #4338ca;
+  --color-violet: #6d28d9;
+  --color-blue-soft: rgba(29, 78, 216, 0.1);
+  --color-indigo-soft: rgba(67, 56, 202, 0.12);
+  --color-primary: #242b4a; /* footer panel — indigo-leaning navy */
+  --color-primary-contrast: #f2f4fc;
+  --color-footer-accent: #a78bfa; /* violet reads clearly on the navy */
+
+  /* ---- 10% — complementary accent (amber, opposite blue) ---- */
+  --color-accent: #92400e; /* CTAs, eyebrows, brand badge, notice */
+  --color-accent-strong: #78350f;
+  --color-accent-soft: rgba(146, 64, 14, 0.1);
   --color-on-accent: #ffffff;
-  --color-footer-accent: #9dbdff;
+
+  /* ---- Utility ---- */
+  --color-focus: #1d4ed8; /* focus ring stays blue: calm + high contrast */
+  --color-card-face: #0d0d0d; /* dark backdrop for the gem artwork */
   --color-success: #15803d;
   --color-error: #b91c1c;
-  --color-focus: #1d4ed8;
 
   /* Typography */
   --font-base: "Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
@@ -55,24 +86,41 @@
   --transition: 180ms ease;
 }
 
-/* ---------- Dark theme ---------- */
+/* ---------- Dark theme ----------
+   Same 60 / 30 / 10 structure; only the lightness steps change:
+   neutrals go deep blue-black, the analogous family gets lighter
+   to stay legible on dark, and amber flips to its bright step
+   (amber-400) with dark on-accent text. */
 [data-theme="dark"] {
-  --color-bg: #0f1420;
-  --color-surface: #171d2b;
-  --color-surface-alt: #1e2637;
-  --color-border: #2a3348;
-  --color-text: #e8ecf4;
-  --color-text-muted: #aeb8c9;
-  --color-primary: #e8ecf4;
-  --color-primary-contrast: #0f1420;
-  --color-accent: #6b9bff;
-  --color-accent-strong: #85adff;
-  --color-accent-soft: rgba(107, 155, 255, 0.16);
-  --color-on-accent: #0f1420;
-  --color-footer-accent: #1d4ed8;
+  /* ---- 60% — tinted neutrals (blue-black, never pure grey) ---- */
+  --color-bg: #0d1220;
+  --color-surface: #141b2e;
+  --color-surface-alt: #1a2340;
+  --color-border: #2b3860;
+  --color-text: #e6ebf8;
+  --color-text-muted: #a3aecb;
+
+  /* ---- 30% — analogous family, lighter steps for dark bg ---- */
+  --color-blue: #7fa5ff;
+  --color-indigo: #a78bfa;
+  --color-violet: #c4b5fd;
+  --color-blue-soft: rgba(127, 165, 255, 0.16);
+  --color-indigo-soft: rgba(167, 139, 250, 0.16);
+  --color-primary: #e6ebf8; /* footer panel inverts light on dark */
+  --color-primary-contrast: #10162a;
+  --color-footer-accent: #6d28d9; /* violet on the light footer */
+
+  /* ---- 10% — complementary accent (bright amber for dark bg) ---- */
+  --color-accent: #fbbf24;
+  --color-accent-strong: #fcd34d;
+  --color-accent-soft: rgba(251, 191, 36, 0.16);
+  --color-on-accent: #1c1104; /* dark text on bright amber = best contrast */
+
+  /* ---- Utility ---- */
+  --color-focus: #7fa5ff;
+  --color-card-face: #0d0d0d;
   --color-success: #4ade80;
   --color-error: #f87171;
-  --color-focus: #6b9bff;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
@@ -125,13 +173,13 @@ ul {
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-blue); /* in-content links: analogous family */
   text-decoration: none;
   transition: color var(--transition);
 }
 
 a:hover {
-  color: var(--color-accent-strong);
+  color: var(--color-indigo); /* hover steps along the analogous ramp */
 }
 
 :focus-visible {
@@ -260,7 +308,7 @@ a:hover {
 }
 
 .navbar__brand:hover {
-  color: var(--color-accent);
+  color: var(--color-blue);
 }
 
 .navbar__initials {
@@ -303,8 +351,8 @@ a:hover {
 
 .navbar__link:hover,
 .navbar__link.is-active {
-  color: var(--color-accent);
-  background-color: var(--color-accent-soft);
+  color: var(--color-blue); /* nav state uses the cool family, not amber */
+  background-color: var(--color-blue-soft);
 }
 
 /* Theme toggle */
@@ -326,8 +374,8 @@ a:hover {
 }
 
 .theme-toggle:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-blue);
+  color: var(--color-blue);
 }
 
 /* Hamburger — hidden on desktop */
@@ -424,7 +472,7 @@ a:hover {
   margin: 0 0 var(--space-1);
   font-size: var(--fs-xl);
   font-weight: 700;
-  color: var(--color-accent);
+  color: var(--color-violet); /* analogous accent — amber stays for CTAs only */
 }
 
 .stat {
@@ -457,7 +505,7 @@ a:hover {
 .skill-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-  border-color: var(--color-accent);
+  border-color: var(--color-indigo);
 }
 
 .skill-card__icon {
@@ -487,10 +535,12 @@ a:hover {
   display: block;
   width: var(--level, 50%);
   height: 100%;
+  /* The full analogous ramp, blue → indigo → violet, in one element. */
   background: linear-gradient(
     90deg,
-    var(--color-accent),
-    var(--color-accent-strong)
+    var(--color-blue),
+    var(--color-indigo),
+    var(--color-violet)
   );
   border-radius: inherit;
 }
@@ -535,7 +585,7 @@ a:hover {
   font-size: var(--fs-lg);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  color: var(--color-accent);
+  color: var(--color-violet);
 }
 
 /* --- Board --- */
@@ -591,18 +641,18 @@ a:hover {
   background:
     repeating-linear-gradient(
       45deg,
-      var(--color-accent-soft) 0 8px,
+      var(--color-indigo-soft) 0 8px,
       transparent 8px 16px
     ),
     var(--color-surface);
-  color: var(--color-accent);
+  color: var(--color-indigo);
   font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: 0.05em;
 }
 
 .card__face--front {
-  background-color: #0d0d0d;
+  background-color: var(--color-card-face);
   transform: rotateY(180deg);
 }
 
@@ -774,8 +824,8 @@ a:hover {
 
 .form-field__input:focus {
   outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-soft);
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 3px var(--color-blue-soft);
 }
 
 .form-field__input--area {

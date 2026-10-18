@@ -180,12 +180,16 @@
      about where their message went.
      --------------------------------------------------------- */
   var form = document.getElementById("contact-form");
-  var statusEl = document.getElementById("form-status");
+  // NOTE: named formStatusEl (not statusEl) — the game section below also
+  // needs a status element, and a shared name would collide (both are
+  // function-scoped vars in this IIFE, so the second declaration would
+  // silently win and form messages would land in #game-status).
+  var formStatusEl = document.getElementById("form-status");
 
-  function setStatus(message, isError) {
-    if (!statusEl) return;
-    statusEl.textContent = message;
-    statusEl.classList.toggle("is-error", Boolean(isError));
+  function setFormStatus(message, isError) {
+    if (!formStatusEl) return;
+    formStatusEl.textContent = message;
+    formStatusEl.classList.toggle("is-error", Boolean(isError));
   }
 
   if (form) {
@@ -203,19 +207,19 @@
       var message = messageInput ? messageInput.value.trim() : "";
 
       if (!name || !email || !message) {
-        setStatus("Please fill in every field.", true);
+        setFormStatus("Please fill in every field.", true);
         return;
       }
 
       var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailPattern.test(email)) {
-        setStatus("That email address doesn't look right.", true);
+        setFormStatus("That email address doesn't look right.", true);
         if (emailInput) emailInput.focus();
         return;
       }
 
       // Validation passed. Be honest: this was NOT sent anywhere.
-      setStatus(
+      setFormStatus(
         "Looks good, " + name +
           "! This form is a demo, so nothing was sent. " +
           "Please email hello@kientanquan.dev instead.",
@@ -227,8 +231,8 @@
 
     // Clear the error state as soon as the user starts fixing things.
     form.addEventListener("input", function () {
-      if (statusEl && statusEl.classList.contains("is-error")) {
-        setStatus("", false);
+      if (formStatusEl && formStatusEl.classList.contains("is-error")) {
+        setFormStatus("", false);
       }
     });
   }
@@ -240,10 +244,10 @@
   var movesEl = document.getElementById("game-moves");
   var matchesEl = document.getElementById("game-matches");
   var timeEl = document.getElementById("game-time");
-  var statusEl = document.getElementById("game-status");
+  var gameStatusEl = document.getElementById("game-status");
   var restartBtn = document.getElementById("game-restart");
 
-  if (board && movesEl && matchesEl && timeEl && statusEl && restartBtn) {
+  if (board && movesEl && matchesEl && timeEl && gameStatusEl && restartBtn) {
     // 8 unique gems, each used twice = 16 cards on a 4x4 board.
     var GEMS = [
       { id: "purple-diamond", src: "assets/img-8.png", name: "Purple diamond" },
@@ -296,9 +300,9 @@
       timeEl.textContent = formatTime(seconds);
     }
 
-    function setStatus(message, isWin) {
-      statusEl.textContent = message;
-      statusEl.classList.toggle("is-win", Boolean(isWin));
+    function setGameStatus(message, isWin) {
+      gameStatusEl.textContent = message;
+      gameStatusEl.classList.toggle("is-win", Boolean(isWin));
     }
 
     function stopTimer() {
@@ -386,7 +390,7 @@
 
       buildBoard();
       updateStats();
-      setStatus("Flip two cards to find a matching pair.", false);
+      setGameStatus("Flip two cards to find a matching pair.", false);
     }
 
     function onMatch(a, b, gem) {
@@ -401,7 +405,7 @@
 
       if (matches === PAIR_COUNT) {
         stopTimer();
-        setStatus(
+        setGameStatus(
           "You cleared the board in " +
             moves +
             " moves and " +
